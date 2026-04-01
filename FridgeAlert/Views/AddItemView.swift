@@ -34,6 +34,11 @@ struct AddItemView: View {
         withAnimation {
             let newItem = Item(name: name, expirationDate: expirationDate)
             modelContext.insert(newItem)
+
+            NotificationManager.shared.scheduleExpiryNotification(
+                expirationDate: expirationDate,
+                itemName: name
+            )
         }
         dismiss()
     }
