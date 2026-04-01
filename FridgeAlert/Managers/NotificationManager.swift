@@ -7,8 +7,8 @@ class NotificationManager {
 
     func scheduleExpiryNotification(expirationDate: Date, itemName: String) {
         let content = UNMutableNotificationContent()
-        content.title = "賞味期限のお知らせ"
-        content.body = "\(itemName) の賞味期限です！"
+        content.title = "Expiration Date"
+        content.body = "\(itemName) expires today"
         content.sound = .default
 
         var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: expirationDate)
@@ -18,12 +18,6 @@ class NotificationManager {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("通知スケジュール失敗: \(error.localizedDescription)")
-            } else {
-                print("通知をスケジュールしました")
-            }
-        }
+        UNUserNotificationCenter.current().add(request) { _ in }
     }
 }
