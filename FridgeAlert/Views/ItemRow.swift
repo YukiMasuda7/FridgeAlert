@@ -7,7 +7,7 @@ struct ItemRow: View {
         let status = ExpirationStatus(daysLeft: item.daysLeft)
         
         HStack {
-            Image(systemName: "applelogo")
+            Image(systemName: "refrigerator")
                 .resizable()
                 .frame(width: 32, height: 32)
                 .foregroundColor(status.color)

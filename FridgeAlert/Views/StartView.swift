@@ -3,26 +3,31 @@ import SwiftUI
 
 struct StartView: View {
     @State private var isShowingAddSheet = false
-    
+
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Item.expirationDate, order: .forward)
     private var items: [Item]
-    
+
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(items, id: \.id) { item in
-                    ItemRow(item: item)
+            ZStack {
+                Color.originalCyan.ignoresSafeArea()
+                List {
+                    ForEach(items, id: \.id) { item in
+                        ItemRow(item: item)
+                    }
+                    .onDelete(perform: deleteItems)
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: { isShowingAddSheet = true }) {
-                        Label("Add Item", systemImage: "plus")
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        EditButton()
+                    }
+                    ToolbarItem {
+                        Button(action: { isShowingAddSheet = true }) {
+                            Label("Add Item", systemImage: "plus")
+                        }
                     }
                 }
             }
@@ -32,7 +37,7 @@ struct StartView: View {
                 .environment(\.modelContext, modelContext)
         }
     }
-    
+
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for offset in offsets {
